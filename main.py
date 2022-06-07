@@ -12,7 +12,9 @@ def visualize(model, image):
         image = image[:, :, ::-1].transpose(2, 0, 1)
         image = np.ascontiguousarray(np.array(image))
         image = torch.from_numpy(image).float()
-    image = image.unsqueeze(0)
+        
+    if len(image.shape) == 3:
+        image = image.unsqueeze(0)
 
     #feeding to network
     counter = 0
