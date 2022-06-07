@@ -1,21 +1,20 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from torchvision.models import resnet, resnet18
-from torchvision import transforms
+from torchvision.models import resnet18
 import torch.nn as nn
 import cv2
 
 
 def visualize(model, image):
     #preprocess image
-    transform = transforms.Compose([transforms.ToTensor()])
-    image = np.array(image)
-    image = transform(image)
+    if not torch.is_tensor(image):
+        image = image[:, :, ::-1].transpose(2, 0, 1)
+        image = np.ascontiguousarray(np.array(image))
+        image = torch.from_numpy(image).float()
     image = image.unsqueeze(0)
 
     #feeding to network
-
     counter = 0
     model_list = list(model.children())
     model_weights = []
